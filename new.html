@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madrasa Admission Form</title>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import Firebase SDK and Firestore
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+        
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyApOZoupcomNnSREowtW4I26gdmAKeXSys",
+            authDomain: "madrasa-admission-form.firebaseapp.com",
+            projectId: "madrasa-admission-form",
+            storageBucket: "madrasa-admission-form.appspot.com",
+            messagingSenderId: "1082719620286",
+            appId: "1:1082719620286:web:98d740785fe451682d62ef",
+            measurementId: "G-D7EKHFC4CL"
+        };
+
+        // Initialize Firebase and Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Function to save form data to Firestore
+        async function saveFormData(formData) {
+            try {
+                await addDoc(collection(db, "admissions"), formData);
+                alert("Form submitted successfully!");
+            } catch (error) {
+                console.error("Error adding document: ", error);
+            }
+        }
+
+        // Handle form submission
+        window.onload = function() {
+            const form = document.getElementById('admissionForm');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();  // Prevent default form submission
+
+                // Gather form data
+                const name = document.getElementById('name').value;
+                const dob = document.getElementById('dob').value;
+                const gender = document.querySelector('input[name="gender"]:checked').value;
+                const aadhar = document.getElementById('aadhar').value;
+                const address = document.getElementById('address').value;
+                const email = document.getElementById('email').value;
+                const classSelected = document.getElementById('class').value;
+                const declaration = document.getElementById('declaration').checked ? "Agreed" : "Not Agreed";
+
+                // Prepare form data object
+                const formData = {
+                    name: name,
+                    dob: dob,
+                    gender: gender,
+                    aadhar: aadhar,
+                    address: address,
+                    email: email,
+                    class: classSelected,
+                    declaration: declaration
+                };
+
+                // Save to Firestore
+                await saveFormData(formData);
+
+                // Reset the form after submission
+                form.reset();
+            });
+        }
+    </script>
+</head>
+<body>
+    <form id="admissionForm">
+        <fieldset>
+            <center>
+                <h2>Madrasa Admission Form</h2><br>
+                <h1><b>MAMBAUL ULOOM MADRASA MANIYANODI</b></h1><br>
+                <h3>Maniyanodi, PO. Trikaripur, Dist. Kasergod</h3><br>
+            </center>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter Your Name" required><br><br>
+
+            <label for="dob">Date Of Birth</label>
+            <input type="date" id="dob" name="dob" required><br><br>
+
+            <label>Gender</label><br>
+            <input type="radio" id="male" name="gender" value="Male" required>Male<br>
+            <input type="radio" id="female" name="gender" value="Female" required>Female<br><br>
+
+            <label for="aadhar">Aadhar Card Number</label>
+            <input type="text" id="aadhar" name="aadhar" placeholder="Enter Your Aadhar Card Number" required><br><br>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter Your Email" required><br><br>
+
+            <label for="class">Choose The Class</label>
+            <select id="class" name="class" required>
+                <option value="" disabled selected>...Select The Class...</option>
+                <option value="Class 1">Class: 1</option>
+                <option value="Class 2">Class: 2</option>
+                <option value="Class 3">Class: 3</option>
+                <option value="Class 4">Class: 4</option>
+                <option value="Class 5">Class: 5</option>
+                <option value="Class 6">Class: 6</option>
+                <option value="Class 7">Class: 7</option>
+                <option value="Class 8">Class: 8</option>
+                <option value="Class 9">Class: 9</option>
+                <option value="Class 10">Class: 10</option>
+            </select><br><br>
+
+            <label>Declaration</label><br>
+            <input type="checkbox" id="declaration" name="declaration" required>
+            <label for="declaration">I declare that all details entered above are true and correct to the best of my knowledge and belief.</label><br><br>
+
+            <input type="submit" value="Submit">
+            <input type="reset" value="Reset">
+        </fieldset>
+    </form>
+</body>
+</html>
